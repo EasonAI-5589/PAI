@@ -79,7 +79,7 @@ pope_loader = torch.utils.data.DataLoader(
 
 base_dir = "./pope/" + args.model
 if not os.path.exists(base_dir):
-    os.mkdir(base_dir)
+    os.makedirs(base_dir)
 
 # dump metric file
 file_parts = [
