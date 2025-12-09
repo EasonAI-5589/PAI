@@ -2,6 +2,7 @@ import json
 import os
 import random
 
+import torch
 from PIL import Image
 from torch.utils.data import Dataset
 
@@ -102,6 +103,9 @@ class POPEChatDataSet(Dataset):
         image_path = os.path.join(self.data_path, self.image_list[index])
         raw_image = Image.open(image_path).convert("RGB")
         image = self.trans(raw_image)
+        # 确保 image 是 tensor 类型
+        if not isinstance(image, torch.Tensor):
+            image = torch.from_numpy(image).float()
         query = self.query_list[index]
         label = self.label_list[index]
 
