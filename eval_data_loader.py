@@ -105,7 +105,7 @@ class POPEChatDataSet(Dataset):
         image = self.trans(raw_image)
         # 确保 image 是 tensor 类型
         if not isinstance(image, torch.Tensor):
-            image = torch.from_numpy(image).float()
+            image = torch.as_tensor(image, dtype=torch.float32)
         query = self.query_list[index]
         label = self.label_list[index]
 
