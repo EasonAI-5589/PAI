@@ -102,9 +102,11 @@ class POPEChatDataSet(Dataset):
     def __getitem__(self, index):
         image_path = os.path.join(self.data_path, self.image_list[index])
         raw_image = Image.open(image_path).convert("RGB")
-        image = self.trans(raw_image)
-        # 确保 image 是 tensor 类型
-        if not isinstance(image, torch.Tensor):
+        image = self.trans(raw_image, return_tensors="pt")
+        # 处理 BatchFeature 类型（来自 transformers image_processor）
+        if hasattr(image, "pixel_values"):
+            image = image.pixel_values[0]
+        elif not isinstance(image, torch.Tensor):
             image = torch.as_tensor(image, dtype=torch.float32)
         query = self.query_list[index]
         label = self.label_list[index]
